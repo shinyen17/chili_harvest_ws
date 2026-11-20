@@ -13,7 +13,7 @@ Overlay on top of cocoabot_ws (same as tomato_harvest_ws). Full guide: see the
     source install/setup.bash
 
 ## Run (4 terminals, each sourced as above + install/setup.bash)
-    1) ros2 launch orbbec_camera astra.launch.py            # camera (name may differ)
+    1) ros2 launch orbbec_camera gemini.launch.xml          # camera (name may differ)
     2) ros2 launch chili_harvest chili_robot.launch.py      # MoveIt + servo bridge
     3) ros2 launch chili_harvest chili_harvest.launch.py    # dry run by default
     4) ros2 service call /chili/enable std_srvs/srv/SetBool "{data: true}"
