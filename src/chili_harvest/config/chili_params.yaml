@@ -1,0 +1,57 @@
+# Edit here, then: colcon build --packages-select chili_harvest
+# (or run with --symlink-install so edits apply without rebuilding)
+
+chili_perception:
+  ros__parameters:
+    ripeness_model: chili_ripeness.pt      # file in models/ (or an absolute path)
+    seg_model: chili_stem_seg.pt
+    ripe_classes: ["ripe"]                 # must match your ripeness model's class name(s)
+    chili_class: chili                     # segmentation model class names
+    stem_class: stem
+    ripeness_conf: 0.5
+    seg_conf: 0.25
+    imgsz: 640
+    device: ""                             # "" auto, "0" GPU, "cpu"
+    color_topic: /camera/color/image_raw
+    depth_topic: /camera/depth/image_raw
+    info_topic: /camera/color/camera_info
+    base_frame: base_link
+    camera_frame: ""                       # "" = use frame_id from camera_info
+    min_depth_mm: 150
+    max_depth_mm: 1500
+    max_depth_jump_mm: 30.0
+    flip_depth_horizontal: false           # set true only if the depth overlay is mirrored
+    stem_cut_ratio: 0.5                    # 0 = at the chili, 1 = top of the stem
+    stem_gap_px: 12
+    show_window: true
+    show_depth_overlay: false
+    process_every_n: 1                     # 2 = every other frame (saves GPU)
+
+chili_harvest_control:
+  ros__parameters:
+    dry_run: true                          # true = plan only, arm does NOT move
+    start_enabled: false                   # enable with /chili/enable service
+    go_to_scan_on_start: true
+    scan_joints: [0.0, 0.35, -0.55, -0.2, 0.0]   # joint_1..joint_5 (rad), SRDF "detect"
+    drop_joints: [0.0, 0.0, 0.0, 0.0, 0.0]       # where the basket is, SRDF "rest"
+    gripper_open: 0.30
+    gripper_hold: 0.06                     # tune so the chili is held, not crushed
+    gripper_closed: 0.0
+    cutter_open: 0.69
+    cutter_closed: 0.0
+    cutter_offset: [0.0, 0.0, 0.09]        # cutter cut-point relative to tcp_link (m): MEASURE
+    target_offset: [0.0, 0.0, 0.0]         # calibration correction in base_link (m)
+    approach_distance: 0.08
+    position_tolerance: 0.01
+    level_tolerance: 0.35
+    min_reach: 0.15
+    max_reach: 0.60
+    min_z: -0.10
+    max_z: 0.60
+    stable_count: 5
+    stable_radius: 0.015
+    settle_time: 2.0
+    fast_velocity: 0.3
+    slow_velocity: 0.1
+    planning_time: 5.0
+    planning_attempts: 10
